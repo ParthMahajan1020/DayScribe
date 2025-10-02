@@ -1,13 +1,13 @@
 import csv
-from datetime import datetime
+from datetime import datetime  # For storing date of tasks
 
-# Daily Task Organizer - Debugged & Cleaned
+# Main function for Daily Task Organizer
 def main():
-    checklist = []
-    completed_tasks = []
-    incomplete_tasks = []
+    checklist = []          # Stores all tasks entered for today
+    completed_tasks = []    # Stores tasks marked as completed
+    incomplete_tasks = []   # Stores tasks marked as incomplete
     
-    # User adds tasks
+    # --- Step 1: User adds tasks ---
     while True:
         try:
             n = int(input("How many tasks do you want to add today? "))
@@ -21,23 +21,24 @@ def main():
         except ValueError:
             print("Please enter a valid number.")
     
+    # Input each task with validation
     for i in range(n):
         while True:
             task = input(f"Enter task {i+1}: ").strip()
-            if task:
+            if task:  # Ensure task is not empty
                 checklist.append(task)
                 break
             else:
                 print("Task cannot be empty. Please enter a valid task.")
     
-    # Display checklist
+    # --- Step 2: Display today's checklist ---
     print("\n" + "="*30)
     print("TODAY'S CHECKLIST:")
     print("="*30)
     for i, task in enumerate(checklist, 1):
         print(f"{i}. {task}")
     
-    # End of day review
+    # --- Step 3: End of day review ---
     print("\n" + "="*30)
     print("END OF DAY REVIEW")
     print("="*30)
@@ -53,11 +54,12 @@ def main():
             else:
                 print("Please enter 'y' for yes or 'n' for no.")
     
-    # Results
+    # --- Step 4: Print daily summary ---
     print("\n" + "="*40)
     print("DAILY SUMMARY")
     print("="*40)
     
+    # Helper function to print completed/incomplete tasks
     def print_tasks(title, tasks):
         print(title)
         if tasks:
@@ -69,11 +71,10 @@ def main():
     print_tasks(f"✅ COMPLETED TASKS ({len(completed_tasks)}):", completed_tasks)
     print_tasks(f"\n❌ INCOMPLETE TASKS ({len(incomplete_tasks)}):", incomplete_tasks)
     
-    # Completion rate
+    # Completion rate and motivation messages
     completion_rate = (len(completed_tasks) / len(checklist)) * 100 if checklist else 0
     print(f"\n📈 Completion Rate: {completion_rate:.1f}%")
     
-    # Motivation
     if completion_rate == 100:
         print("🏆 Perfect day! You completed all your tasks!")
     elif completion_rate >= 75:
@@ -83,20 +84,21 @@ def main():
     else:
         print("💪 Tomorrow is a new day. You can do better!")
 
-    # --- Save results to CSV (single date block) ---
-    today = datetime.now().strftime("%Y-%m-%d")
+    # --- Step 5: Save tasks to CSV (pretty format, single date block) ---
+    today = datetime.now().strftime("%Y-%m-%d")  # Get current date
     filename = "daily_tasks_record.csv"
 
-    # Read existing content
+    # Read existing content to check if today's date already exists
     try:
         with open(filename, "r") as f:
             content = f.read()
     except FileNotFoundError:
         content = ""
 
+    # Open CSV for appending
     with open(filename, "a") as f:
-        # If today's date not in file, write header + date
         if today not in content:
+            # If today's date not in file, write header + date
             f.write(f"\nDate       , Task                 , Status\n")
             first_task = True
             for task in completed_tasks:
@@ -112,6 +114,7 @@ def main():
                 else:
                     f.write(f"{''.ljust(11)} , {task.ljust(20)} , Incomplete\n")
         else:
+            # Append tasks under today's existing block (no new header/date)
             for task in completed_tasks:
                 f.write(f"{''.ljust(11)} , {task.ljust(20)} , Completed\n")
             for task in incomplete_tasks:
@@ -120,6 +123,6 @@ def main():
     print(f"📂 Record CSV report saved to {filename}")
 
 
-
+# Run the program
 if __name__ == "__main__":
     main()
