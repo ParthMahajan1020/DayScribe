@@ -83,7 +83,7 @@ def main():
     else:
         print("💪 Tomorrow is a new day. You can do better!")
 
-    # --- Save results to pretty CSV (single date block) ---
+    # --- Save results to CSV (single date block) ---
     today = datetime.now().strftime("%Y-%m-%d")
     filename = "daily_tasks_record.csv"
 
@@ -112,7 +112,6 @@ def main():
                 else:
                     f.write(f"{''.ljust(11)} , {task.ljust(20)} , Incomplete\n")
         else:
-            # Just append under today's existing block (no new header/date)
             for task in completed_tasks:
                 f.write(f"{''.ljust(11)} , {task.ljust(20)} , Completed\n")
             for task in incomplete_tasks:
