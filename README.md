@@ -66,7 +66,7 @@ python main.py
 
 - At the end of the day, mark each task as completed or incomplete.
 
-- Your tasks will be saved automatically in a pretty CSV file (daily_tasks_pretty.csv).
+- Your tasks will be saved automatically in a pretty CSV file (daily_tasks_record.csv).
 
 ---
 
